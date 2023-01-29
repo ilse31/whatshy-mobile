@@ -1,13 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { LogBox } from "react-native";
 import { View, Text } from "react-native";
-import Login from "./src/pages/Login";
-import {
-  useFonts,
-  Nunito_400Regular,
-  Lato_400Regular,
-  Inter_900Black,
-} from "@expo-google-fonts/dev";
+import { NavigationContainer } from "@react-navigation/native";
+import { useFonts } from "@expo-google-fonts/dev";
+import "react-native-gesture-handler";
+import { useColorScheme } from "nativewind";
+import StackRoutes from "./src/routes/StackRoutes";
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);
 
@@ -23,9 +21,11 @@ export default function App() {
     PoppinsExtraBold: require("./assets/fonts/Poppins-ExtraBold.otf"),
   });
 
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+
   if (!fontsLoaded) {
     return (
-      <View>
+      <View className='flex-1 justify-center items-center'>
         <Text>Loading...</Text>
       </View>
     );
@@ -33,8 +33,10 @@ export default function App() {
 
   return (
     <>
-      <Login />
-      <StatusBar style='light' />
+      <NavigationContainer>
+        <StackRoutes />
+        <StatusBar style='auto' />
+      </NavigationContainer>
     </>
   );
 }
