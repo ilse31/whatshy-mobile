@@ -6,6 +6,8 @@ import { useFonts } from "@expo-google-fonts/dev";
 import "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
 import StackRoutes from "./src/routes/StackRoutes";
+import { Provider } from "react-redux";
+import store from "./src/store";
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);
 
@@ -34,8 +36,10 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-        <StackRoutes />
-        <StatusBar style='auto' />
+        <Provider store={store}>
+          <StackRoutes />
+          <StatusBar style='auto' />
+        </Provider>
       </NavigationContainer>
     </>
   );
