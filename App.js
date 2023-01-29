@@ -8,6 +8,8 @@ import { useColorScheme } from "nativewind";
 import StackRoutes from "./src/routes/StackRoutes";
 import { Provider } from "react-redux";
 import store from "./src/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);
@@ -25,6 +27,19 @@ export default function App() {
   });
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
+
+  const getData = async () => {
+    try {
+      const data = await AsyncStorage.getItem("firstlaunched");
+      const users = await AsyncStorage.getItem("users");
+      console.log(data);
+      console.log(users);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   if (!fontsLoaded) {
     return (
