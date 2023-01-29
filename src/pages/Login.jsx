@@ -9,14 +9,40 @@ import Mainlayouts from '../layouts/Mainlayouts'
 import { LoginValidation } from '../components/global/Validations'
 import { LoginValue } from '../components/global/InitValue'
 import { Ionicons } from '@expo/vector-icons';
+import { useUserLoginMutation } from '../services/api'
+import { useNavigation } from '@react-navigation/native'
 
 const Login = () =>
 {
     const [ loginPass, setLoginPass ] = useState( true )
+
+    const navigation = useNavigation();
+    const [ login ] = useUserLoginMutation()
+
+
+    const handleLogin = ( values, { resetForm } ) =>
+    {
+        login( values ).unwrap().then( ( res ) =>
+        {
+            if ( res.users.length === 1 )
+            {
+                console.log( res );
+                // localStorage.setItem( 'user', JSON.stringify( res.users[ 0 ] ) )
+                alert( 'Login Success' )
+                // navigates( '/' )
+                resetForm()
+            }
+        } ).catch( ( err ) =>
+        {
+            console.log( err.data.error );
+            alert( 'Login Failed' )
+        } )
+    }
+
     return (
         <Mainlayouts>
             <ScrollView className="flex-1 bg-white">
-                <View className='items-center justify-start flex-1 bg-white gap-10 p-10'>
+                <View className='items-center justify-start flex-1 bg-white gap-x-10 p-10'>
                     <View className="items-center justify-center">
                         <Image
                             className="w-40 h-40 border shadow shadow-lg"
@@ -28,19 +54,15 @@ const Login = () =>
                     </View>
                     <View className="items-center">
                         <Text className="font-Poppins text-base">Login to your account !</Text>
-                        <Text className="font-Poppins">Enter the information while you Registering</Text>
+                        <Text className="font-Poppins text-center">Enter the information while you Registering</Text>
                     </View>
                     <Formik className="w-full" initialValues={ LoginValue }
                         validationSchema={ LoginValidation }
-                        onSubmit={ ( values, { setSubmitting } ) =>
-                        {
-                            alert( JSON.stringify( values, null, 2 ) )
-                            setSubmitting( false )
-                        } }
+                        onSubmit={ handleLogin }
                     >
                         {
                             ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
-                                <View className="w-full gap-y-5 ml-10 mt-5">
+                                <View className="w-full gap-y-5 ml-10 mt-3">
                                     <View>
                                         <Text className="font-Poppins px-3">Email</Text>
                                         <TextInput value={ values.email } onChangeText={ handleChange( 'email' ) } onBlur={ handleBlur( 'email' ) } className="border w-full text-md rounded-full px-5 py-3" placeholder='Insert your Email' />
@@ -79,7 +101,7 @@ const Login = () =>
                 </View>
                 <View className="gap-5">
                     <Text className="font-Poppins text-center">Don't have an account ?</Text>
-                    <Text className="font-Poppins text-center underline">Register Now</Text>
+                    <Text className="font-Poppins text-center underline mb-5">Register Now</Text>
                 </View>
             </ScrollView>
         </Mainlayouts>
