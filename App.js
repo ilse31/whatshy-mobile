@@ -8,6 +8,7 @@ import { useColorScheme } from "nativewind";
 import StackRoutes from "./src/routes/StackRoutes";
 import { Provider } from "react-redux";
 import store from "./src/store";
+
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);
 
