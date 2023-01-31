@@ -55,7 +55,6 @@ const StackRoutes = () => {
         }}
       >
         <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen name='Personal' component={PersonalMessages} />
       </Stack.Group>
     </Stack.Navigator>
   );
