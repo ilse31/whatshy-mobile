@@ -1,12 +1,15 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Mainlayouts from '../layouts/Mainlayouts'
 
 const PersonalMessages = () =>
 {
     return (
-        <View>
-            <Text>PersonalMessages</Text>
-        </View>
+        <Mainlayouts>
+            <View>
+                <Text>PersonalMessages</Text>
+            </View>
+        </Mainlayouts>
     )
 }
 

@@ -9,8 +9,6 @@ const Home = () =>
     //clear AsyncStorage
     const navigation = useNavigation()
     const [ isLogin, setisLogin ] = useState( false )
-
-    const [ numbers, setnumbers ] = useState( 0 )
     const getAsyncStorage = async () =>
     {
         try
