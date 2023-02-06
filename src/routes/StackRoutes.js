@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useEffect, useState } from "react";
 import { Home, Login, Register, WellComeScreen } from "../pages";
 import PersonalMessages from "../pages/PersonalMessages";
+import MainApp from "./Route";
 
 const Stack = createStackNavigator();
 
@@ -33,29 +34,33 @@ const StackRoutes = () => {
   return (
     <Stack.Navigator>
       {firstLaunched && (
-        <Stack.Group>
-          <Stack.Screen
-            name='WellComeScreen'
-            component={WellComeScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Group>
+        <Stack.Screen
+          name='WellComeScreen'
+          component={WellComeScreen}
+          options={{ headerShown: false }}
+        />
       )}
-      <Stack.Group
-        screenOptions={{
+      <Stack.Screen
+        options={{
           headerShown: false,
         }}
-      >
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Register' component={Register} />
-      </Stack.Group>
-      <Stack.Group
-        screenOptions={{
+        name='Login'
+        component={Login}
+      />
+      <Stack.Screen
+        options={{
           headerShown: false,
         }}
-      >
-        <Stack.Screen name='Home' component={Home} />
-      </Stack.Group>
+        name='Register'
+        component={Register}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name='main'
+        component={MainApp}
+      />
     </Stack.Navigator>
   );
 };

@@ -2,3 +2,8 @@ export { default as Home } from "./Home";
 export { default as Login } from "./Login";
 export { default as WellComeScreen } from "./WellcomeScreen";
 export { default as Register } from "./Register";
+export { default as Account } from "./Account";
+export { default as History } from "./History";
+export { default as PersonalMessages } from "./PersonalMessages";
+export { default as Broadcast } from "./Broadcast";
+export { default as Contact } from "./Contact";

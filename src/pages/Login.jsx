@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = () =>
 {
     const [ loginPass, setLoginPass ] = useState( true )
+    const [ isLoading, setisLoading ] = useState( false )
     const navigation = useNavigation();
     const [ login ] = useUserLoginMutation()
 
@@ -25,13 +26,15 @@ const Login = () =>
 
     const handleLogin = ( values, { resetForm } ) =>
     {
+        setisLoading( true )
         login( values ).unwrap().then( ( res ) =>
         {
             if ( res.users.length === 1 )
             {
                 console.log( res );
                 alert( 'Login Success' )
-                navigation.navigate( 'Home' )
+                navigation.navigate( 'main' )
+                setisLoading( false )
                 AsyncStorage.setItem( "users", JSON.stringify( res.users[ 0 ] ) )
                 resetForm()
             }
@@ -99,7 +102,7 @@ const Login = () =>
                                     <View className="items-center w-full">
                                         <Button onPress={
                                             handleSubmit
-                                        } title={ "continue" } disabled={
+                                        } title={ isLoading ? "Loading" : "Continue" } disabled={
                                             errors.email || errors.password ? true : false &&
                                                 values.email === '' || values.password === '' ? true : false
                                         } w="full" />
