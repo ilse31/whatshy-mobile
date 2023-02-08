@@ -9,4 +9,9 @@ let RegisterValue = {
   username: "",
 };
 
-export { LoginValue, RegisterValue };
+let ChatValue = {
+  phoneNumber: "",
+  message: "",
+};
+
+export { LoginValue, RegisterValue, ChatValue };
