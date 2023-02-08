@@ -6,7 +6,7 @@ const Mainlayouts = ( {
 } ) =>
 {
     return (
-        <SafeAreaView className='flex-1 dark:bg-slate-800 bg-white container'>
+        <SafeAreaView className='flex-1 bg-white dark:bg-slate-800 container'>
             {
                 children
             }
