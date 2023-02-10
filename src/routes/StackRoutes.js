@@ -10,57 +10,60 @@ const Stack = createStackNavigator();
 const StackRoutes = () => {
   const [firstLaunched, setfirstLaunched] = useState(false);
   const [isLogin, setisLogin] = useState(false);
-  const getLocalstorage = async () => {
-    const first = await AsyncStorage.getItem("firstLaunched");
-    const login = await AsyncStorage.getItem("users");
-    if (first === null) {
-      setfirstLaunched(true);
-      AsyncStorage.setItem("firstlaunched", "true");
-    } else {
-      setfirstLaunched(false);
-    }
-    if (login === null) {
-      setisLogin(false);
-    } else {
-      setisLogin(true);
-      console.log(login);
-    }
-  };
 
   useEffect(() => {
-    getLocalstorage();
+    // First launch check
+    AsyncStorage.getItem("firstlaunched").then((value) => {
+      if (value === null) {
+        setfirstLaunched(true);
+        AsyncStorage.setItem("firstlaunched", "false");
+      } else {
+        setfirstLaunched(false);
+      }
+    });
+
+    // Login check
+    AsyncStorage.getItem("users").then((value) => {
+      if (value !== null) {
+        setisLogin(true);
+      } else {
+        setisLogin(false);
+      }
+    });
   }, []);
 
   return (
     <Stack.Navigator>
-      {firstLaunched && (
+      {firstLaunched ? (
         <Stack.Screen
           name='WellComeScreen'
           component={WellComeScreen}
           options={{ headerShown: false }}
         />
+      ) : isLogin ? (
+        <Stack.Screen
+          name='main'
+          component={MainApp}
+          options={{ headerShown: false }}
+        />
+      ) : (
+        <>
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+            name='Login'
+            component={Login}
+          />
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+            name='Register'
+            component={Register}
+          />
+        </>
       )}
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name='Login'
-        component={Login}
-      />
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name='Register'
-        component={Register}
-      />
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-        name='main'
-        component={MainApp}
-      />
     </Stack.Navigator>
   );
 };

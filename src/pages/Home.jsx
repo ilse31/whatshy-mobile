@@ -9,26 +9,20 @@ const Home = () =>
     //clear AsyncStorage
     const navigation = useNavigation()
     const [ isLogin, setisLogin ] = useState( false )
-    const getAsyncStorage = async () =>
-    {
-        try
-        {
-            const data = await JSON.parse( await AsyncStorage.getItem( 'users' ) )
-            if ( data )
-            {
-                setisLogin( true )
-            }
-            console.log( data )
-        }
-        catch ( e )
-        {
-            console.log( e )
-        }
-    }
 
     useEffect( () =>
     {
-        getAsyncStorage()
+        AsyncStorage.getItem( "users" ).then( ( value ) =>
+        {
+            if ( value !== null )
+            {
+                setisLogin( true )
+            }
+            else
+            {
+                navigation.navigate( "Login" )
+            }
+        } )
     }, [] )
     return (
         <Mainlayouts>
