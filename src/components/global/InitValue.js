@@ -11,7 +11,7 @@ let RegisterValue = {
 
 let ChatValue = {
   phoneNumber: "",
-  message: "",
+  messages: "",
 };
 
 export { LoginValue, RegisterValue, ChatValue };

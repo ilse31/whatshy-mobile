@@ -40,7 +40,7 @@ const MainApp = () => {
               name='paper-plane'
               size={24}
               style={{
-                color: focused ? "#ffff" : "#000000",
+                color: focused ? "#ffff" : "#18191A",
               }}
             />
           ),
@@ -55,7 +55,7 @@ const MainApp = () => {
               name='broadcast'
               size={24}
               style={{
-                color: focused ? "#ffff" : "#000000",
+                color: focused ? "#ffff" : "#18191A",
               }}
             />
           ),
@@ -82,7 +82,7 @@ const MainApp = () => {
                 name='contacts'
                 size={24}
                 style={{
-                  color: focused ? "#00D7B9" : "#000000",
+                  color: focused ? "#00D7B9" : "#18191A",
                 }}
               />
             </View>
@@ -98,7 +98,7 @@ const MainApp = () => {
               name='clock'
               size={24}
               style={{
-                color: focused ? "#ffff" : "#000000",
+                color: focused ? "#ffff" : "#18191A",
               }}
             />
           ),
@@ -113,7 +113,7 @@ const MainApp = () => {
               name='user'
               size={24}
               style={{
-                color: focused ? "#ffff" : "#000000",
+                color: focused ? "#ffff" : "#18191A",
               }}
             />
           ),

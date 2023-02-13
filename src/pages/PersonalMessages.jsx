@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Mainlayouts from '../layouts/Mainlayouts'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -8,10 +8,57 @@ import { ChatValue } from '../components/global/InitValue'
 import { ChatValidations } from '../components/global/Validations'
 import HeaderColorScheme from '../components/HeaderColorScheme'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import { weatherConditions } from '../helpers/weatherCondition'
 
 const PersonalMessages = () =>
 {
     const [ users, setUsers ] = useState()
+    const [ value, setValue ] = useState( "Pucakwangi" )
+    const [ weather, setWeather ] = useState()
+    const api = {
+        key: "4f8e795dcd6dbf7b9f5276bff095ffc1",
+        base: "https://api.openweathermap.org/data/2.5/"
+    }
+
+    const getWeather = async () =>
+    {
+        await fetch( `${ api.base }weather?q=${ value }&units=metric&APPID=${ api.key }` )
+            .then( res => res.json() )
+            .then( result =>
+            {
+                setWeather( result )
+                console.log( result );
+            } ).catch( e => console.log( e ) )
+    }
+
+    // const search = ( event ) =>
+    // {
+    //     if ( e.key === "Enter" )
+    //     {
+    //         fetch( `${ api.base }weather?q=${ value }&units=metric&APPID=${ api.key }` )
+    //             .then( res => res.json() )
+    //             .then( result =>
+    //             {
+    //                 setWeather( result )
+    //                 setValue( "" )
+    //                 console.log( result );
+    //             } )
+    //     }
+    // }
+
+    const dateBuilder = ( d ) =>
+    {
+        let months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+        let days = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
+
+        let day = days[ d.getDay() ];
+        let date = d.getDate();
+        let month = months[ d.getMonth() ];
+        let year = d.getFullYear();
+
+        return `${ day } ${ date } ${ month } ${ year }`
+    }
 
     const getAsyncStorage = async () =>
     {
@@ -30,6 +77,8 @@ const PersonalMessages = () =>
 
     useEffect( () =>
     {
+        // search()
+        getWeather()
         getAsyncStorage()
     }, [] )
     const handleChat = ( values, { resetForm } ) =>
@@ -38,114 +87,108 @@ const PersonalMessages = () =>
         resetForm()
     }
 
-    function getDayName ( dateStr, locale )
-    {
-        var date = new Date( dateStr );
-        return date.toLocaleDateString( locale, { weekday: 'long' } );
-    }
+
 
     return (
         <Mainlayouts>
-            <View>
-                <HeaderColorScheme />
-            </View>
-            <View className="px-5">
-                <View>
-                    <Text className="capitalize text-2xl font-PoppinsBold">
-                        Hi { users?.username }
-                    </Text>
-                    <Text className="font-PoppinsMedium text-md dark:text-white">Using Personal Messages you can send message to unsaved number.</Text>
-                </View>
-                <View className="mt-5">
-                    {/* see today and  clock */ }
-                    <View className="flex-row items-center justify-between">
-                        <View className="flex-row items-center justify-end">
-                            <Text className="font-PoppinsSemiBold text-xl dark:text-white">{
-                                //get name day
-                                new Date().toLocaleString( 'en-us', { weekday: 'long' } )
-                            }</Text>
+            <ScrollView className="my-10">
+                <View className="px-5">
+                    <View className="mb-5">
+                        <View className="border-2 border-gray-300 rounded-lg p-2 justify-around flex-row w-full">
+                            <TextInput
+                                value={ value }
+                                onChangeText={ ( text ) => setValue( text ) }
+                                placeholder='Search'
+                                placeholderTextColor={ 'gray' }
+                                className='ml-3 w-full'
+                            />
+                            <TouchableOpacity onPress={ getWeather } className=" pr-5">
+                                <AntDesign name="search1" size={ 24 } color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        <View className="flex-col mt-2">
                             {
-                                new Date().getHours() < 12 ?
-                                    <Text className="font-PoppinsSemiBold text-xl dark:text-white">, Good Morning</Text>
-                                    :
-                                    <Text className="font-PoppinsSemiBold text-xl dark:text-white">, Good Afternoon</Text>
+                                typeof weather != "undefined" ? (
+                                    <View className="flex-row justify-between flex-row w-full">
+                                        <View className="flex-row flex-col">
+                                            <Text className="text-md font-PoppinsMedium capitalize">{ weather.name }</Text>
+                                            <Text className="text-2xl font-PoppinsMedium capitalize">{ Math.round( weather.main.temp ) }°c</Text>
+                                            <Text className="text-md font-PoppinsMedium capitalize">{ weather.weather[ 0 ].main }</Text>
+                                        </View>
+                                        <View className="flex-row flex-col">
+                                            <Text className="text-md font-PoppinsMedium capitalize">{ dateBuilder( new Date() ) }</Text>
+                                            <MaterialCommunityIcons name={ weatherConditions[ weather.weather[ 0 ].main ].icon } size={ 50 } color={ weatherConditions[ weather.weather[ 0 ].main ].color } />
+                                        </View>
+                                    </View>
+                                ) : ( <Text className="text-2xl font-PoppinsBold capitalize">Loading...</Text> )
                             }
                         </View>
                     </View>
+                    <View>
+                        <Text className="capitalize text-2xl font-PoppinsBold dark:text-white">
+                            Hi { users?.username }
+                        </Text>
+                        <Text className="font-PoppinsMedium text-md dark:text-white">Using Personal Messages you can send message to unsaved number.</Text>
+                    </View>
                 </View>
-            </View>
-            <ScrollView className='dark:bg-slate-800'>
                 <View className="px-5">
-                    {/* <View>
-                        <Text>Hot News</Text>
-                        <View>
-                            <ScrollView horizontal={ true } showsHorizontalScrollIndicator={ false } className="flex-1 gap-x-5">
-                                <View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
-                                    <Text className="font-PoppinsSemiBold text-xl">1</Text>
+                    <View className='dark:bg-slate-800'>
+                        <Formik
+                            initialValues={ ChatValue }
+                            validationSchema={ ChatValidations }
+                            onSubmit={ handleChat }
+                        >
+                            { ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
+                                <View className="gap-y-3 w-full">
+                                    <View className="gap-y-4">
+                                        <Text className="dark:text-white">Phone Number</Text>
+                                        <TextInput
+                                            placeholder='Phone Number'
+                                            value={ values.phoneNumber }
+                                            keyboardType='phone-pad'
+                                            placeholderTextColor={ 'gray' }
+                                            onChangeText={ handleChange( 'phoneNumber' ) }
+                                            onBlur={ handleBlur( 'phoneNumber' ) }
+                                            className='border-2 border-gray-300 w-full p-2 rounded-lg dark:text-white'
+                                        />
+                                        {
+                                            errors.phoneNumber && touched.phoneNumber ? (
+                                                <Text className="text-red-500 px-3">{ errors.phoneNumber }</Text>
+                                            ) : null
+                                        }
+                                    </View>
+                                    <View className="gap-y-4">
+                                        <Text className="dark:text-white">Message</Text>
+                                        <TextInput
+                                            onchangeText={ handleChange( 'messages' ) }
+                                            multiline={ true }
+                                            numberOfLines={ 8 }
+                                            value={ values.messages }
+                                            placeholderTextColor={ 'gray' }
+                                            onBlur={ handleBlur( 'messages' ) }
+                                            placeholder='Message'
+                                            className='border-2 border-gray-300 p-2 rounded-lg'
+                                        />
+                                        {
+                                            errors.messages && touched.messages ? (
+                                                <Text className="text-red-500 px-3">{ errors.message }</Text>
+                                            ) : null
+                                        }
+                                    </View>
+                                    <View className="w-full items-center">
+                                        <Button rounded='rounded-lg' title='Send' w={ "full" } onPress={
+                                            handleSubmit
+                                        } disabled={
+                                            errors.phoneNumber || errors.message ? true : false
+                                        } />
+                                    </View>
                                 </View>
-                                <View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
-                                    <Text className="font-PoppinsSemiBold text-xl">2</Text>
-                                </View>
-                                <View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
-                                    <Text className="font-PoppinsSemiBold text-xl">2</Text>
-                                </View>
-                            </ScrollView>
-                        </View>
-                    </View> */}
-                    <Formik
-                        initialValues={ ChatValue }
-                        validationSchema={ ChatValidations }
-                        onSubmit={ handleChat }
-                    >
-                        { ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
-                            <View className="gap-y-3 w-full">
-                                <View className="gap-y-4">
-                                    <Text className="dark:text-white">Phone Number</Text>
-                                    <TextInput
-                                        placeholder='Phone Number'
-                                        value={ values.phoneNumber }
-                                        placeholderTextColor={ 'gray' }
-                                        onChangeText={ handleChange( 'phoneNumber' ) }
-                                        onBlur={ handleBlur( 'phoneNumber' ) }
-                                        className='border-2 border-gray-300 w-full p-2 rounded-lg dark:text-white'
-                                    />
-                                    {
-                                        errors.phoneNumber && touched.phoneNumber ? (
-                                            <Text className="text-red-500 px-3">{ errors.phoneNumber }</Text>
-                                        ) : null
-                                    }
-                                </View>
-                                <View className="gap-y-4">
-                                    <Text className="dark:text-white">Message</Text>
-                                    <TextInput
-                                        onchangeText={ handleChange( 'message' ) }
-                                        multiline={ true }
-                                        value={ values.message }
-                                        placeholderTextColor={ 'gray' }
-                                        onBlur={ handleBlur( 'message' ) }
-                                        numberOfLines={ 10 }
-                                        placeholder='Message'
-                                        className='border-2 border-gray-300 p-2 rounded-lg'
-                                    />
-                                    {
-                                        errors.message && touched.message ? (
-                                            <Text className="text-red-500 px-3">{ errors.message }</Text>
-                                        ) : null
-                                    }
-                                </View>
-                                <View className="w-full items-center">
-                                    <Button rounded='rounded-lg' title='Send' w={ "full" } onPress={
-                                        handleSubmit
-                                    } disabled={
-                                        errors.phoneNumber || errors.message ? true : false
-                                    } />
-                                </View>
-                            </View>
-                        ) }
-                    </Formik>
+                            ) }
+                        </Formik>
+                    </View >
                 </View>
             </ScrollView>
-        </Mainlayouts>
+        </Mainlayouts >
     )
 }
 
