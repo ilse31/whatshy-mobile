@@ -16,4 +16,15 @@ const RegisterValidation = Yup.object().shape({
     ),
 });
 
-export { LoginValidation, RegisterValidation };
+const phoneRegExp = /^(\+62|62)8[1-9][0-9]{6,9}$/;
+
+const ChatValidations = Yup.object().shape({
+  phoneNumber: Yup.string()
+    .required("Phone Number Required")
+    .max(15)
+    .min(13)
+    .matches(phoneRegExp, "Phone number is not valid, using 62 or +62"),
+  message: Yup.string().required("Please Enter your message"),
+});
+
+export { LoginValidation, RegisterValidation, ChatValidations };

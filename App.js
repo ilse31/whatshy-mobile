@@ -4,7 +4,6 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "@expo-google-fonts/dev";
 import "react-native-gesture-handler";
-import { useColorScheme } from "nativewind";
 import StackRoutes from "./src/routes/StackRoutes";
 import { Provider } from "react-redux";
 import store from "./src/store";
@@ -25,8 +24,6 @@ export default function App() {
     PoppinsBlack: require("./assets/fonts/Poppins-Black.otf"),
     PoppinsExtraBold: require("./assets/fonts/Poppins-ExtraBold.otf"),
   });
-
-  const { colorScheme, toggleColorScheme } = useColorScheme();
 
   const getData = async () => {
     try {

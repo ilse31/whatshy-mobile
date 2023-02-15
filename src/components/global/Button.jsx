@@ -7,10 +7,11 @@ const Button = ( {
     accessibilityLabel,
     disabled,
     w = 52,
+    rounded = "rounded-full",
 } ) =>
 {
     return (
-        <TouchableOpacity activeOpacity={ 1 } onPressIn={ onPress } accessibilityLabel={ accessibilityLabel } className={ ` w-${ w } ${ disabled ? "bg-gray-200" : "hover:bg-emerald-700 bg-emerald-500  active:bg-emerald-600" } h-12 rounded-full items-center justify-center active:ring active:ring-offset-2` } disabled={ disabled }>
+        <TouchableOpacity activeOpacity={ 1 } onPressIn={ onPress } accessibilityLabel={ accessibilityLabel } className={ ` w-${ w } ${ disabled ? "bg-gray-200" : "hover:bg-emerald-700 bg-emerald-500  active:bg-emerald-600" } h-12 ${ rounded } items-center justify-center active:ring active:ring-offset-2` } disabled={ disabled }>
             <Text className=" text-white font-PoppinsSemiBold capitalize">{ title }</Text>
         </TouchableOpacity>
     )

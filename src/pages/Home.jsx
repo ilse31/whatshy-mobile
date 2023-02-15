@@ -2,39 +2,34 @@ import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
+import Mainlayouts from '../layouts/Mainlayouts'
 
 const Home = () =>
 {
     //clear AsyncStorage
     const navigation = useNavigation()
     const [ isLogin, setisLogin ] = useState( false )
-    const getAsyncStorage = async () =>
-    {
-        try
-        {
-            const data = await JSON.parse( await AsyncStorage.getItem( 'users' ) )
-            console.log( data.username )
-            console.log( "islogin", isLogin );
-        }
-        catch ( e )
-        {
-            console.log( e )
-        }
-    }
 
     useEffect( () =>
     {
-        getAsyncStorage()
-        if ( !isLogin )
+        AsyncStorage.getItem( "users" ).then( ( value ) =>
         {
-            navigation.navigate( 'Login' )
-        }
+            if ( value !== null )
+            {
+                setisLogin( true )
+            }
+            else
+            {
+                navigation.navigate( "Login" )
+            }
+        } )
     }, [] )
-    console.log( "islogin", isLogin );
     return (
-        <View>
-            <Text>Home</Text>
-        </View>
+        <Mainlayouts>
+            <View>
+                <Text>Home</Text>
+            </View>
+        </Mainlayouts>
     )
 }
 
