@@ -1,10 +1,36 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import Mainlayouts from '../layouts/Mainlayouts'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
+import { useGetPhonebookQuery } from '../services/api';
+import Base64 from '../helpers/Base64';
 const Contact = () =>
 {
     const [ showDropdown, setshowDropdown ] = useState( false )
+    const [ user, setUser ] = useState( {} )
+    const [ searchValue, setsearchValue ] = useState( '' )
+    const getAsyncStorage = async () =>
+    {
+        const users = await AsyncStorage.getItem( "users" )
+        setUser( JSON.parse( users ) )
+    }
+
+
+    useEffect( () =>
+    {
+        getAsyncStorage()
+    }, [] )
+
+    const { data, refetch } = useGetPhonebookQuery( {
+        id: user.id,
+    } )
+
+    console.log( data?.users_by_pk.contactlist );
+    console.log( user.id );
+
+
 
     return (
         <Mainlayouts>
@@ -44,64 +70,32 @@ const Contact = () =>
                         }
                     </View>
                 </View>
-
-                {/* contact list */ }
-                <View className="flex-row justify-between items-center px-5 py-5">
-                    <View className="flex-row items-center">
-                        <View className="bg-gray-300 h-12 w-12 rounded-full items-center justify-center">
-                            <MaterialCommunityIcons name="account" size={ 28 } color="gray" />
-                        </View>
-                        <View className="ml-5">
-                            <Text className="font-bold">Ilham</Text>
-                            <Text className="text-gray-400">089530571642</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity>
-                        <AntDesign name="right" size={ 24 } color="black" />
-                    </TouchableOpacity>
-                </View>
-                <View className="flex-row justify-between items-center px-5 py-5">
-                    <View className="flex-row items-center">
-                        <View className="bg-gray-300 h-12 w-12 rounded-full items-center justify-center">
-                            <MaterialCommunityIcons name="account" size={ 28 } color="gray" />
-                        </View>
-                        <View className="ml-5">
-                            <Text className="font-bold">Ilham</Text>
-                            <Text className="text-gray-400">089530571642</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity>
-                        <AntDesign name="right" size={ 24 } color="black" />
-                    </TouchableOpacity>
-                </View>
-                <View className="flex-row justify-between items-center px-5 py-5">
-                    <View className="flex-row items-center">
-                        <View className="bg-gray-300 h-12 w-12 rounded-full items-center justify-center">
-                            <MaterialCommunityIcons name="account" size={ 28 } color="gray" />
-                        </View>
-                        <View className="ml-5">
-                            <Text className="font-bold">Ilham</Text>
-                            <Text className="text-gray-400">089530571642</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity>
-                        <AntDesign name="right" size={ 24 } color="black" />
-                    </TouchableOpacity>
-                </View>
-                <View className="flex-row justify-between items-center px-5 py-5">
-                    <View className="flex-row items-center">
-                        <View className="bg-gray-300 h-12 w-12 rounded-full items-center justify-center">
-                            <MaterialCommunityIcons name="account" size={ 28 } color="gray" />
-                        </View>
-                        <View className="ml-5">
-                            <Text className="font-bold">Ilham</Text>
-                            <Text className="text-gray-400">089530571642</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity>
-                        <AntDesign name="right" size={ 24 } color="black" />
-                    </TouchableOpacity>
-                </View>
+                <ScrollView className="flex-1">
+                    {
+                        data?.users_by_pk.contactlist.map( ( item, index ) =>
+                        {
+                            return (
+                                <View className="flex-row items-center justify-between px-5 py-3 border-b border-gray-300" key={ index }>
+                                    <View className="flex-row items-center">
+                                        <MaterialCommunityIcons name="account-circle" size={ 24 } color="black" />
+                                        <View className="flex-col ml-3">
+                                            <Text className="font-bold">{ atob( item.name ) }</Text>
+                                            <Text className="text-gray-400">{ atob( item.number ) }</Text>
+                                        </View>
+                                    </View>
+                                    <View className="flex-row items-center">
+                                        <TouchableOpacity>
+                                            <MaterialCommunityIcons name="message-reply-text" size={ 24 } color="black" />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <MaterialCommunityIcons name="dots-vertical" size={ 24 } color="black" />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            )
+                        } )
+                    }
+                </ScrollView>
             </ScrollView>
         </Mainlayouts>
     )

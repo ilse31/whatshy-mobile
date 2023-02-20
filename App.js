@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import store from "./src/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
+import "@react-native-anywhere/polyfill-base64";
 
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);

@@ -12,11 +12,11 @@ import { useUserLoginMutation } from '../services/api'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = () =>
+const Login = ( { navigation } ) =>
 {
     const [ loginPass, setLoginPass ] = useState( true )
     const [ isLoading, setisLoading ] = useState( false )
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
     const [ login ] = useUserLoginMutation()
 
     const AsyncStorages = async () =>
@@ -29,6 +29,7 @@ const Login = () =>
         setisLoading( true )
         login( values ).unwrap().then( ( res ) =>
         {
+            ilham
             if ( res.users.length === 1 )
             {
                 console.log( res );
@@ -63,7 +64,7 @@ const Login = () =>
                                 svg.Logo
                             }
                         />
-                        <Text className="font-PoppinsBold text-2xl">Whatshy</Text>
+                        <Text className="font-PoppinsBold text-2xl">Whashy</Text>
                     </View>
                     <View className="items-center">
                         <Text className="font-Poppins text-base">Login to your account !</Text>

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Mainlayouts from '../layouts/Mainlayouts'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -10,6 +10,7 @@ import HeaderColorScheme from '../components/HeaderColorScheme'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { weatherConditions } from '../helpers/weatherCondition'
+import * as Yup from "yup";
 
 const PersonalMessages = () =>
 {
@@ -32,20 +33,21 @@ const PersonalMessages = () =>
             } ).catch( e => console.log( e ) )
     }
 
-    // const search = ( event ) =>
-    // {
-    //     if ( e.key === "Enter" )
-    //     {
-    //         fetch( `${ api.base }weather?q=${ value }&units=metric&APPID=${ api.key }` )
-    //             .then( res => res.json() )
-    //             .then( result =>
-    //             {
-    //                 setWeather( result )
-    //                 setValue( "" )
-    //                 console.log( result );
-    //             } )
-    //     }
-    // }
+    let initValue = {
+        phoneNumber: "",
+        messages: "",
+    }
+    const phoneRegExp = /^(\+62|62)8[1-9][0-9]{6,9}$/;
+
+    const validate = Yup.object().shape({
+        phoneNumber: Yup.string()
+            .required("Phone Number Required")
+            .max(15)
+            .min(13)
+            .matches(phoneRegExp, "Phone number is not valid, using 62 or +62"),
+        message: Yup.string().required("Please Enter your message"),
+    });
+
 
     const dateBuilder = ( d ) =>
     {
@@ -83,10 +85,10 @@ const PersonalMessages = () =>
     }, [] )
     const handleChat = ( values, { resetForm } ) =>
     {
+        alert( "Message Sent" )
         console.log( values );
         resetForm()
     }
-
 
 
     return (
@@ -133,10 +135,16 @@ const PersonalMessages = () =>
                 </View>
                 <View className="px-5">
                     <View className='dark:bg-slate-800'>
-                        <Formik
-                            initialValues={ ChatValue }
-                            validationSchema={ ChatValidations }
-                            onSubmit={ handleChat }
+                        <Formik className="w-full"
+                            initialValues={ initValue }
+                            validationSchema={ validate }
+                            onSubmit={
+                                ( values, { resetForm } ) =>
+                                {
+                                    console.log( values );
+                                    resetForm()
+                                }
+                            }
                         >
                             { ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
                                 <View className="gap-y-3 w-full">
@@ -160,28 +168,23 @@ const PersonalMessages = () =>
                                     <View className="gap-y-4">
                                         <Text className="dark:text-white">Message</Text>
                                         <TextInput
-                                            onchangeText={ handleChange( 'messages' ) }
-                                            multiline={ true }
-                                            numberOfLines={ 8 }
+                                            placeholder='Chat Message'
                                             value={ values.messages }
+                                            keyboardType='default'
                                             placeholderTextColor={ 'gray' }
+                                            onChangeText={ handleChange( 'messages' ) }
                                             onBlur={ handleBlur( 'messages' ) }
-                                            placeholder='Message'
-                                            className='border-2 border-gray-300 p-2 rounded-lg'
+                                            className='border-2 border-gray-300 w-full p-2 rounded-lg dark:text-white'
                                         />
                                         {
                                             errors.messages && touched.messages ? (
-                                                <Text className="text-red-500 px-3">{ errors.message }</Text>
+                                                <Text className="text-red-500 px-3">{ errors.messages }</Text>
                                             ) : null
                                         }
                                     </View>
-                                    <View className="w-full items-center">
-                                        <Button rounded='rounded-lg' title='Send' w={ "full" } onPress={
-                                            handleSubmit
-                                        } disabled={
-                                            errors.phoneNumber || errors.message ? true : false
-                                        } />
-                                    </View>
+                                    <TouchableOpacity onPressIn={ handleSubmit } className="w-full">
+                                        <Text className="text-center text-white bg-blue-500 rounded-lg p-2">Send</Text>
+                                    </TouchableOpacity>
                                 </View>
                             ) }
                         </Formik>

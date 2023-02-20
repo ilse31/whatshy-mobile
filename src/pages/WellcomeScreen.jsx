@@ -16,7 +16,7 @@ const WellcomeScreen = () =>
         {
             if ( value !== null )
             {
-                navigation.navigate( "Home" )
+                navigation.navigate( "main" )
             }
         }
         )
