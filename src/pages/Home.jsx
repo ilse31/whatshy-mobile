@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import Mainlayouts from '../layouts/Mainlayouts'
+import { getAsyncStorage } from '../helpers/AsyncStorage'
 
 const Home = () =>
 {
@@ -10,10 +11,11 @@ const Home = () =>
     const navigation = useNavigation()
     const [ isLogin, setisLogin ] = useState( false )
 
-    useEffect( () =>
+    const getUserLogin = async () =>
     {
-        AsyncStorage.getItem( "users" ).then( ( value ) =>
+        try
         {
+            const value = await getAsyncStorage( "users" )
             if ( value !== null )
             {
                 setisLogin( true )
@@ -22,7 +24,15 @@ const Home = () =>
             {
                 navigation.navigate( "Login" )
             }
-        } )
+        } catch ( error )
+        {
+            console.log( error );
+        }
+    }
+
+    useEffect( () =>
+    {
+        getUserLogin()
     }, [] )
     return (
         <Mainlayouts>

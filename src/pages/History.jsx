@@ -4,9 +4,12 @@ import Mainlayouts from '../layouts/Mainlayouts'
 import { useEffect } from 'react'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from '@expo/vector-icons';
+import { useIsFocused } from "@react-navigation/native";
 
-const History = () =>
+
+const History = ( { navigation } ) =>
 {
+    const focus = useIsFocused();
     const [ history, setHistory ] = useState( [] )
     const getHistory = async () =>
     {
@@ -35,6 +38,10 @@ const History = () =>
         {
             await AsyncStorage.removeItem( 'history' )
             console.log( 'data berhasil dihapus' );
+            setHistory( [] )
+            alert( 'Delete Success' )
+            getHistory()
+            navigation.navigate( 'main' )
         } catch ( error )
         {
             console.log( error );
@@ -67,6 +74,10 @@ const History = () =>
     {
         console.log( 'data effect' )
         getHistory()
+        if ( focus )
+        {
+            getHistory()
+        }
     }, [] )
 
 
@@ -85,16 +96,16 @@ const History = () =>
                     <View className={ `${ history.length > 0 ? 'flex-col flex-1' : 'h-96' }` }>
                         {
                             history.length > 0 ? history.map( ( item, index ) =>
-                                <View className='flex-row justify-between items-center mt-3 p-3 rounded border-gray-500 border'>
+                                <View key={ index } className='flex-row justify-between items-center mt-3 p-3 rounded border-gray-500 border'>
                                     <View className="flex-row items-center">
                                         <View className="">
-                                            <Text className="font-bold">080908908</Text>
-                                            <Text className="text-gray-400">089530571642</Text>
+                                            <Text className="font-bold">{ item.number }</Text>
+                                            <Text className="text-gray-400">{ item.text }</Text>
                                         </View>
                                     </View>
                                     <View className="flex-col items-end justify-center">
-                                        <Text className="text-gray-400">12:00</Text>
-                                        <Text className="text-gray-400 ml-2">12/12/2020</Text>
+                                        <Text className="text-gray-400">{ new Date( item.createdAt ).toTimeString().substr( 0, 5 ) }</Text>
+                                        <Text className="text-gray-400 ml-2">{ new Date( item.createdAt ).toDateString() }</Text>
                                     </View>
                                 </View>
                             ) :
