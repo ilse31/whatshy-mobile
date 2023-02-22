@@ -1,5 +1,5 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
+import React, { BackHandler } from 'react'
 import Mainlayouts from '../layouts/Mainlayouts'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
@@ -11,6 +11,13 @@ import { useState } from 'react'
 const Account = () =>
 {
     const navigate = useNavigation()
+
+    const RemoveUser = async () =>
+    {
+        await AsyncStorage.clear()
+        navigate.navigate( "Login" )
+    }
+
     const [ users, setUsers ] = useState()
     useEffect( () =>
     {
@@ -30,7 +37,11 @@ const Account = () =>
             <View className="pt-10 pb-5 px-5">
                 <View className="justify-between flex-row items-center">
                     <Text className="text-2xl font-bold text-center text-white font-PoppinsBold">Account</Text>
-                    <AntDesign name="logout" size={ 24 } color="white" />
+                    <TouchableOpacity onPressIn={
+                        () => RemoveUser()
+                    }>
+                        <AntDesign name="logout" size={ 24 } color="white" />
+                    </TouchableOpacity>
                 </View>
                 <View className="items-center mt-5">
                     <Image source={ svg.fotoProfile } />

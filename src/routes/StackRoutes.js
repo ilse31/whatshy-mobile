@@ -34,36 +34,30 @@ const StackRoutes = () => {
 
   return (
     <Stack.Navigator>
-      {firstLaunched ? (
-        <Stack.Screen
-          name='WellComeScreen'
-          component={WellComeScreen}
-          options={{ headerShown: false }}
-        />
-      ) : isLogin ? (
-        <Stack.Screen
-          name='main'
-          component={MainApp}
-          options={{ headerShown: false }}
-        />
-      ) : (
-        <>
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name='Login'
-            component={Login}
-          />
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name='Register'
-            component={Register}
-          />
-        </>
-      )}
+      <Stack.Screen
+        name='WellComeScreen'
+        component={WellComeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='main'
+        component={MainApp}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name='Login'
+        component={Login}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name='Register'
+        component={Register}
+      />
     </Stack.Navigator>
   );
 };

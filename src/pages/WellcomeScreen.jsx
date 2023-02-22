@@ -34,7 +34,7 @@ const WellcomeScreen = () =>
                 <Text className="font-PoppinsSemiBold text-3xl">Whatshy</Text>
                 <Text className="text-md font-Poppins text-center">A platform for Chat without Save Whatsapp Number</Text>
                 <View className="items-center">
-                    <Button title={ "Get Started" } onPress={ () => navigation.navigate( "main" ) } />
+                    <Button title={ "Get Started" } onPress={ () => navigation.navigate( "Login" ) } />
                 </View>
             </View>
         </Mainlayouts >

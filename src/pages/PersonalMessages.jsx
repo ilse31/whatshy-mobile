@@ -42,7 +42,7 @@ const PersonalMessages = () =>
             .max( 15 )
             .min( 13 )
             .matches( phoneRegExp, "Phone number is not valid, using 62 or +62" ),
-        message: Yup.string().required( "Please Enter your message" ),
+        messages: Yup.string().required( "Please Enter your message" ),
     } );
 
 
@@ -80,14 +80,22 @@ const PersonalMessages = () =>
         getWeather()
         getAsyncStorage()
     }, [] )
-    const handleChat = ( values ) =>
+    const handleChat = async ( values ) =>
     {
-        alert( "Message Sent" )
-        console.log( values );
-
+        let messages = values.messages
+        let number = values.phoneNumber
+        let getMessages = messages
+        let newhistory = []
+        newhistory.push( { number: number, text: getMessages, createdAt: new Date() } )
+        let history = await AsyncStorage.getItem( 'history' )
+        if ( history )
+        {
+            newhistory = [ ...JSON.parse( history ) ]
+            newhistory.splice( 0, 0, { number: number, text: getMessages, createdAt: new Date() } )
+        }
+        AsyncStorage.setItem( 'history', JSON.stringify( newhistory ) )
+        Linking.openURL( `whatsapp://send?phone=${ number }&text=${ messages }` );
     }
-
-
     return (
         <Mainlayouts>
             <ScrollView className="my-10">

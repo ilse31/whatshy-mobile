@@ -29,7 +29,6 @@ const Login = ( { navigation } ) =>
         setisLoading( true )
         login( values ).unwrap().then( ( res ) =>
         {
-            ilham
             if ( res.users.length === 1 )
             {
                 console.log( res );
