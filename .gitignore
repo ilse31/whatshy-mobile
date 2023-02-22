@@ -1,5 +1,7 @@
 node_modules/
 .expo/
+/eas.json
+/keystyore.json
 dist/
 npm-debug.*
 *.jks

@@ -39,14 +39,14 @@ const PersonalMessages = () =>
     }
     const phoneRegExp = /^(\+62|62)8[1-9][0-9]{6,9}$/;
 
-    const validate = Yup.object().shape({
+    const validate = Yup.object().shape( {
         phoneNumber: Yup.string()
-            .required("Phone Number Required")
-            .max(15)
-            .min(13)
-            .matches(phoneRegExp, "Phone number is not valid, using 62 or +62"),
-        message: Yup.string().required("Please Enter your message"),
-    });
+            .required( "Phone Number Required" )
+            .max( 15 )
+            .min( 13 )
+            .matches( phoneRegExp, "Phone number is not valid, using 62 or +62" ),
+        message: Yup.string().required( "Please Enter your message" ),
+    } );
 
 
     const dateBuilder = ( d ) =>
@@ -83,11 +83,11 @@ const PersonalMessages = () =>
         getWeather()
         getAsyncStorage()
     }, [] )
-    const handleChat = ( values, { resetForm } ) =>
+    const handleChat = ( values ) =>
     {
         alert( "Message Sent" )
         console.log( values );
-        resetForm()
+
     }
 
 
@@ -138,13 +138,7 @@ const PersonalMessages = () =>
                         <Formik className="w-full"
                             initialValues={ initValue }
                             validationSchema={ validate }
-                            onSubmit={
-                                ( values, { resetForm } ) =>
-                                {
-                                    console.log( values );
-                                    resetForm()
-                                }
-                            }
+                            onSubmit={ ( values ) => handleChat( values ) }
                         >
                             { ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
                                 <View className="gap-y-3 w-full">
@@ -182,9 +176,11 @@ const PersonalMessages = () =>
                                             ) : null
                                         }
                                     </View>
-                                    <TouchableOpacity onPressIn={ handleSubmit } className="w-full">
-                                        <Text className="text-center text-white bg-blue-500 rounded-lg p-2">Send</Text>
-                                    </TouchableOpacity>
+                                    <View className="gap-y-4">
+                                        <Button title="Send" onPress={ handleSubmit } disabled={
+                                            errors.phoneNumber || errors.messages ? true : false
+                                        } rounded="rounded-xl" w={ 'w-full' } />
+                                    </View>
                                 </View>
                             ) }
                         </Formik>

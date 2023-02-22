@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const History = ( { navigation } ) =>
@@ -47,6 +48,22 @@ const History = ( { navigation } ) =>
             console.log( error );
         }
     }
+
+    useFocusEffect(
+        React.useCallback( () =>
+        {
+            getHistory()
+            return () =>
+            {
+                console.log( 'data effect' )
+                getHistory()
+                if ( focus )
+                {
+                    getHistory()
+                }
+            }
+        }, [] )
+    );
 
     const deleteHistorybyId = async ( id ) =>
     {
