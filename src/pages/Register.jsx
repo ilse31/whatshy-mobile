@@ -57,7 +57,7 @@ const Register = () =>
                             ( { handleChange, handleBlur, handleSubmit, values, errors, touched } ) => (
                                 <View className="w-full gap-y-5 ml-10 mt-3">
                                     <View>
-                                        <Text className="font-Poppins px-3">Email</Text>
+                                        <Text className="font-Poppins px-3">Username</Text>
                                         <TextInput value={ values.username } onChangeText={ handleChange( 'username' ) } onBlur={ handleBlur( 'username' ) } className="border w-full text-md rounded-full px-5 py-3" placeholder='Insert your Email' />
                                         { errors.username && touched.username ? (
                                             <Text className="text-red-500 px-3">{ errors.username }</Text>
