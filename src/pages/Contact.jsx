@@ -26,12 +26,12 @@ const Contact = () =>
         number: '',
         name: ''
     }
-    const phoneRegExp = /^(^\+62\s?|^0)(\d{3,4}-?){2}\d{3,4}$/g
+    const phoneRegExp = /^(^\+62\s?)(\d{3,4}-?){2}\d{3,4}$/g
     const validationContact = Yup.object().shape( {
         number: Yup.string().required( 'Phone Number Required' ).max( 15, 'Phone Number Too Long' ).min(
             12,
             'Phone Number Too Short'
-        ).matches( phoneRegExp, 'Phone Number is not valid, Please Use +62 or 0' ).typeError( 'Error Server' ),
+        ).matches( phoneRegExp, 'Phone Number is not valid, Please Use +62' ).typeError( 'Error Server' ),
         name: Yup.string().required( "Please Enter your Name" ),
     } );
 
@@ -251,7 +251,7 @@ const Contact = () =>
                                         <TextInput
                                             placeholder='Phone Number'
                                             value={ values.number }
-                                            keyboardType='number-pad'
+                                            keyboardType='phone-pad'
                                             onChangeText={ handleChange( 'number' ) }
                                             onBlur={ handleBlur( 'number' ) }
                                             className='border-2 border-gray-300 rounded-lg p-2 mt-2 w-full'
@@ -304,7 +304,7 @@ const Contact = () =>
                                         <TextInput
                                             placeholder='Phone Number'
                                             value={ values.number }
-                                            keyboardType='number-pad'
+                                            keyboardType='phone-pad'
                                             onChangeText={ handleChange( 'number' ) }
                                             onBlur={ handleBlur( 'number' ) }
                                             className='border-2 border-gray-300 rounded-lg p-2 mt-2 w-full'

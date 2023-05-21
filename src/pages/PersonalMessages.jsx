@@ -34,13 +34,13 @@ const PersonalMessages = () =>
         phoneNumber: "",
         messages: "",
     }
-    const phoneRegExp = /^(^\+62\s?|^0)(\d{3,4}-?){2}\d{3,4}$/g;
+    const phoneRegExp = /^(^\+62\s?)(\d{3,4}-?){2}\d{3,4}$/g;
 
     const validate = Yup.object().shape( {
         phoneNumber: Yup.string().required( 'Phone Number Required' ).max( 15, 'Phone Number Too Long' ).min(
             12,
             'Phone Number Too Short'
-        ).matches( phoneRegExp, 'Phone Number is not valid, Please Use +62 or 0' ).typeError( 'Error Server' ),
+        ).matches( phoneRegExp, 'Phone Number is not valid, Please Use +62' ).typeError( 'Error Server' ),
         messages: Yup.string().required( "Please Enter your message" ),
     } );
 
