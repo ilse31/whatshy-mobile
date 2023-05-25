@@ -2,11 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const whatshyAPi = createApi({
   reducerPath: "whatshyApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://square-dove-73.hasura.app/api/rest",
+    baseUrl: "",
     headers: {
       "Content-Type": "application/json",
-      "x-hasura-admin-secret":
-        "15S69DEMAIaP6CSxytqQbQPdBLBLF8viC2olz6lTt5jUjDLAw34omV1f4vIH8mhj",
+      "x-hasura-admin-secret": "",
     },
   }),
   endpoints: (builder) => ({

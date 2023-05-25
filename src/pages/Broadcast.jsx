@@ -29,7 +29,7 @@ const Broadcast = () =>
                 newhistory.splice( 0, 0, { number: number, text: getMessages, createdAt: new Date() } )
             }
             AsyncStorage.setItem( 'history', JSON.stringify( newhistory ) )
-            Linking.openURL( `whatsapp://send?&text=${ message }` );
+            // Linking.openURL( `whatsapp://send?&text=${ message }` );
         }
     }
 

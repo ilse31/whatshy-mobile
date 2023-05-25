@@ -93,7 +93,7 @@ const PersonalMessages = () =>
             newhistory.splice( 0, 0, { number: number, text: getMessages, createdAt: new Date() } )
         }
         AsyncStorage.setItem( 'history', JSON.stringify( newhistory ) )
-        Linking.openURL( `whatsapp://send?phone=${ number }&text=${ messages }` );
+        // Linking.openURL( `whatsapp://send?phone=${ number }&text=${ messages }` );
     }
     return (
         <Mainlayouts>
